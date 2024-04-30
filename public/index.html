@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat App</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        function sendMessage() {
+            const message = document.getElementById('message').value;
+            const group = document.getElementById('group').value;
+            socket.emit('message', { message, group });
+        }
+
+        function joinGroup() {
+            const group = document.getElementById('group').value;
+            socket.emit('createGroup', group);
+        }
+
+        socket.on('message', (data) => {
+            const messageBox = document.getElementById('messages');
+            messageBox.innerHTML += `<p><strong>${data.user}:</strong> ${data.message}</p>`;
+        });
+    </script>
+</head>
+<body>
+    <input type="text" id="group" placeholder="Enter group name">
+    <button onclick="joinGroup()">Join Group</button>
+    <input type="text" id="message" placeholder="Enter message">
+    <button onclick="sendMessage()">Send</button>
+    <div id="messages"></div>
+</body>
+</html>
