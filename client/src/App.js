@@ -1,3 +1,5 @@
+//We followed a tutorial from PedroTech, https://www.youtube.com/watch?v=NU-HfZY3ATQ
+
 import './App.css';
 import io from 'socket.io-client'
 import { useState } from "react";
