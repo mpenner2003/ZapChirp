@@ -1,3 +1,5 @@
+//We followed a tutorial from PedroTech, https://www.youtube.com/watch?v=NU-HfZY3ATQ
+
 const express = require('express');
 const app = express()
 const http = require('http');
