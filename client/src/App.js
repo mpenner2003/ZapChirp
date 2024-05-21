@@ -1,4 +1,9 @@
-//We followed a tutorial from PedroTech, https://www.youtube.com/watch?v=NU-HfZY3ATQ
+/*
+We followed a tutorial from PedroTech, https://www.youtube.com/watch?v=NU-HfZY3ATQ
+
+Pedro Machado. "React Socket.io Chat App." Version 1.0, Aug 26, 2021. 
+Source Code. Available at: https://github.com/machadop1407/react-socketio-chat-app.
+*/
 
 import './App.css';
 import io from 'socket.io-client'
