@@ -1,19 +1,29 @@
 // Register.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Register({ setRegistered }) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState(""); // State for username
+    const [password, setPassword] = useState(""); // State for password
+    const [confirmPassword, setConfirmPassword] = useState(""); // State for confirm password
+    const navigate = useNavigate();
 
     const handleRegister = async () => {
+
+        if(password != confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
         try {
             await axios.post('http://localhost:3001/register', { username, password });
             setRegistered(true); // Notify parent that registration is complete
             alert('Registration successful! Please log in.');
+            navigate('/');
         } catch (error) {
             console.error('Registration failed!', error);
-            alert('Registration failed');
+            alert('Registration failed: ' + (error.response ? error.response.data : 'Unknown error'));
         }
     };
 
@@ -32,6 +42,13 @@ function Register({ setRegistered }) {
                 placeholder="Password..."
                 onChange={(event) => {
                     setPassword(event.target.value);
+                }}
+            />
+            <input
+                type="password"
+                placeholder="Confirm Password..."
+                onChange={(event) => {
+                    setConfirmPassword(event.target.value);
                 }}
             />
             <button onClick={handleRegister}>Register</button>

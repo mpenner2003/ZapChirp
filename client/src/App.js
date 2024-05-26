@@ -12,8 +12,9 @@ import { useState, useEffect } from "react"; // Importing useState hook from Rea
 import Chat from './Chat'; // Importing Chat component
 import Contacts from './Contacts'; // Importing Contacts component
 import Login from './Login'; // Importing User Authentication component
-import Register from './Register';
-import axios from 'axios';
+import Register from './Register'; // Importing User Registration component
+import axios from 'axios'; // Makes http requests from browser using GET, PUT, POST and DELETE
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'; // React Router to route our code
 
 // Creating a socket connection to the server
 const socket = io.connect("http://localhost:3001");
@@ -43,30 +44,37 @@ function App() {
   };
 
   return (
-    <div className="App">
-      {!loggedIn ? (
-        showRegister ? (
-          <Register setRegistered={() => setShowRegister(false)} />
-        ) : (
-            <Login setLoggedIn={setLoggedIn} setToken={setToken} setShowRegister={setShowRegister} />
-        )
-      ) : !showChat ? (
-          <div className="joinChatContainer">
-              <h3>ZapChirp</h3>
-              <Contacts onContactClick={joinRoom} />
-              <input
-                  type="text"
-                  placeholder="Room ID..."
-                  onChange={(event) => {
-                    setRoom(event.target.value);
-                  }}
-              />
-              <button onClick={() => joinRoom(room)}>Join A Room</button>
-          </div>
-      ) : (
-          <Chat socket={socket} username={username} room={room} />
-      )}
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Login setLoggedIn={setLoggedIn} setToken={setToken} />} />
+          <Route path="/register" element={<Register setRegistered={() => setLoggedIn(true)} />} />
+          <Route path="/chat" element={
+            !loggedIn ? (
+              showRegister ? (
+                <Register setRegistered={() => setShowRegister(false)} />
+              ) : (
+                  <Login setLoggedIn={setLoggedIn} setToken={setToken} setShowRegister={setShowRegister} />
+              )
+            ) : !showChat ? (
+                <div className="joinChatContainer">
+                    <h3>ZapChirp</h3>
+                    <Contacts onContactClick={joinRoom} />
+                    <input
+                        type="text"
+                        placeholder="Room ID..."
+                        onChange={(event) => {
+                          setRoom(event.target.value);
+                        }}
+                    />
+                    <button onClick={() => joinRoom(room)}>Join A Room</button>
+                </div>
+            ) : (
+                <Chat socket={socket} username={username} room={room} />
+            )} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

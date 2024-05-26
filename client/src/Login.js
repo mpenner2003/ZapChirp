@@ -1,17 +1,20 @@
 // Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function Login({ setLoggedIn, setToken, setShowRegister }) {
+function Login({ setLoggedIn, setToken}) { // Passes two booleans
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleLogin = async () => { // Function to handle user login
         try {
             const response = await axios.post('http://localhost:3001/login', { username, password });
             setToken(response.data.token);
             setLoggedIn(true);
-        } catch (error) {
+            navigate('/Chat');
+        } catch (error) { // Something went wrong
             alert('Login failed');
         }
     };
@@ -34,7 +37,7 @@ function Login({ setLoggedIn, setToken, setShowRegister }) {
                 }}
             />
             <button onClick={handleLogin}>Login</button>
-            <p>Don't have an account? <button onClick={() => setShowRegister(true)}>Register here to start zapping</button></p>
+            <p>Don't have an account? <button onClick={() => navigate('/Register')}>Register here to start zapping</button></p>
         </div>
     );
 }
