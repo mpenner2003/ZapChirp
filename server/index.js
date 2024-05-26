@@ -12,10 +12,21 @@ const http = require('http');
 const cors = require('cors'); 
 const { Server } = require("socket.io");
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('./models/User');
+
+const JWT_SECRET = 'your_jwt_secret'; // Use a strong secret key for JWT
 
 // Middleware setup
 app.use(cors()); // Enabling CORS for cross-origin requests
 app.use(bodyParser.json()); // Parsing JSON request bodies
+
+mongoose.connect('mongodb://localhost:27017/chatApp', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 // Creating an HTTP server
 const server = http.createServer(app);
@@ -28,20 +39,68 @@ const io = new Server(server, {
     },
 });
 
+app.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    try {
+        const user = new User({ username, password: hashedPassword });
+        await user.save();
+        res.status(201).send('User registered successfully');
+    } catch (error) {
+        res.status(400).send('Error registering user');
+    }
+});
+
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+
+    if (!user) {
+        return res.status(400).send('User not found');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+        return res.status(400).send('Invalid password');
+    }
+
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET);
+    res.status(200).send({ token });
+});
+
+
+
+
 // In-memory storage for contacts
 let contacts = [];
 
 // Route to add a new contact
-app.post('/contacts', (req, res) => {
+app.post('/contacts', authenticateToken, (req, res) => {
     const contact = req.body; // Getting the contact data from the request body
     contacts.push(contact); // Adding the contact to the contacts array
     res.status(201).send(contact); // Sending a response with status 201 (Created)
 });
 
 // Route to get all contacts
-app.get('/contacts', (req, res) => {
+app.get('/contacts', authenticateToken, (req, res) => {
     res.send(contacts); // Sending the contacts array as the response
 });
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+}
+
 
 // Handling Socket.io connections
 io.on("connection", (socket) => {

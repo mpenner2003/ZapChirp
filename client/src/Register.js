@@ -1,24 +1,25 @@
-// Login.js
+// Register.js
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function Login({ setLoggedIn, setToken, setShowRegister }) {
+function Register({ setRegistered }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = async () => {
+    const handleRegister = async () => {
         try {
-            const response = await axios.post('http://localhost:3001/login', { username, password });
-            setToken(response.data.token);
-            setLoggedIn(true);
+            await axios.post('http://localhost:3001/register', { username, password });
+            setRegistered(true); // Notify parent that registration is complete
+            alert('Registration successful! Please log in.');
         } catch (error) {
-            alert('Login failed');
+            console.error('Registration failed!', error);
+            alert('Registration failed');
         }
     };
 
     return (
-        <div className="loginContainer">
-            <h1>Input your Zap Credentials</h1>
+        <div className="registerContainer">
+            <h1>Register to ZapChirp</h1>
             <input
                 type="text"
                 placeholder="Username..."
@@ -33,10 +34,9 @@ function Login({ setLoggedIn, setToken, setShowRegister }) {
                     setPassword(event.target.value);
                 }}
             />
-            <button onClick={handleLogin}>Login</button>
-            <p>Don't have an account? <button onClick={() => setShowRegister(true)}>Register here to start zapping</button></p>
+            <button onClick={handleRegister}>Register</button>
         </div>
     );
 }
 
-export default Login;
+export default Register;
