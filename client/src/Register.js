@@ -4,12 +4,23 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Register({ setRegistered }) {
-    const [username, setUsername] = useState(""); // State for username
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); // State for password
     const [confirmPassword, setConfirmPassword] = useState(""); // State for confirm password
     const navigate = useNavigate();
+    
+    // Validate email format
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
 
     const handleRegister = async () => {
+        
+        if (!validateEmail(email)) {
+            alert('Invalid email format');
+            return;
+        }
 
         if(password != confirmPassword) {
             alert('Passwords do not match');
@@ -17,7 +28,7 @@ function Register({ setRegistered }) {
         }
 
         try {
-            await axios.post('http://localhost:3001/register', { username, password });
+            await axios.post('http://localhost:3001/register', { email, password });
             setRegistered(true); // Notify parent that registration is complete
             alert('Registration successful! Please log in.');
             navigate('/');
@@ -32,9 +43,9 @@ function Register({ setRegistered }) {
             <h1>Register to ZapChirp</h1>
             <input
                 type="text"
-                placeholder="Username..."
+                placeholder="Email..."
                 onChange={(event) => {
-                    setUsername(event.target.value);
+                    setEmail(event.target.value);
                 }}
             />
             <input
