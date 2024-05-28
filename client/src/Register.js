@@ -22,7 +22,7 @@ function Register({ setRegistered }) {
             return;
         }
 
-        if(password != confirmPassword) {
+        if(password !== confirmPassword) {
             alert('Passwords do not match');
             return;
         }

@@ -21,7 +21,8 @@ function Login({ setLoggedIn, setToken}) { // Passes two booleans
 
     return (
         <div className="loginContainer">
-            <h1>Input your Zap Credentials</h1>
+            <h1>Hello There!</h1> <h6>(General Kenobi)</h6> 
+            <h2>Login with your Zap Credentials</h2>
             <input
                 type="text"
                 placeholder="Email..."
