@@ -1,3 +1,5 @@
+// Chat.js
+
 /*
 We derived this from a tutorial from PedroTech, https://www.youtube.com/watch?v=NU-HfZY3ATQ
 
