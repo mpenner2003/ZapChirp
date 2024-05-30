@@ -9,14 +9,15 @@ Source Code. Available at: https://github.com/machadop1407/react-socketio-chat-a
 const express = require('express');
 const app = express();
 const http = require('http');
-const cors = require('cors'); 
+const cors = require('cors'); //Our solution to preventing cross site request forgery
 const { Server } = require("socket.io");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User');
-
+require('dotenv').config(); // Load environment variables from .env file
+const connectToMongoDB = require('./db/connectToMongoDB'); // Import the connectToMongoDB function
 const JWT_SECRET = 'your_jwt_secret'; // Use a strong secret key for JWT
 
 // Middleware setup
@@ -27,6 +28,9 @@ mongoose.connect('mongodb://localhost:27017/chatApp', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
+
+// Connect to MongoDB
+connectToMongoDB();
 
 // Creating an HTTP server
 const server = http.createServer(app);
