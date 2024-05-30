@@ -8,6 +8,7 @@ Source Code. Available at: https://github.com/machadop1407/react-socketio-chat-a
 */
 
 // Importing necessary modules
+require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -18,7 +19,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User');
-require('dotenv').config(); // Load environment variables from .env file
+
 const connectToMongoDB = require('./db/connectToMongoDB'); // Import the connectToMongoDB function
 const JWT_SECRET = 'your_jwt_secret'; // Use a strong secret key for JWT
 
