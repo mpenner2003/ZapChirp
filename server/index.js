@@ -9,6 +9,8 @@ Source Code. Available at: https://github.com/machadop1407/react-socketio-chat-a
 
 // Importing necessary modules
 require('dotenv').config(); // Load environment variables from .env file
+console.log("MONGO_DB_URL:", process.env.MONGO_DB_URL); // Log the MongoDB URL to verify it's loaded correctly
+
 const express = require('express');
 const app = express();
 const http = require('http');
