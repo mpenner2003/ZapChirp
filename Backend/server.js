@@ -18,10 +18,13 @@ app.use("/api/auth", authRoutes);
   //  res.send("Hello World!!");
 //});
 
+// Connect to MongoDB
+connectToMongoDB();
 
+// Routes setup
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT,() => {
-    connectToMongoDB();
     console.log(`Server running on port ${PORT}`)
 });
 
