@@ -9,6 +9,7 @@ function Register({ setRegistered }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); // State for password
     const [confirmPassword, setConfirmPassword] = useState(""); // State for confirm password
+    const [gender, setGender] = useState("");
     const navigate = useNavigate();
     
     // Validate email format
@@ -17,10 +18,22 @@ function Register({ setRegistered }) {
         return re.test(String(email).toLowerCase());
     }
 
+     // Validate gender input
+     const validateGender = (gender) => {
+        const allowedGenders = ["male", "female", "nonbinary"];
+        return allowedGenders.includes(gender.toLowerCase());
+    }
+
+
     const handleRegister = async () => {
         
         if (!validateEmail(email)) {
             alert('Invalid email format');
+            return;
+        }
+
+        if (!validateGender(gender)) {
+            alert('Gender not recognized by computer');
             return;
         }
 
@@ -30,7 +43,7 @@ function Register({ setRegistered }) {
         }
 
         try {
-            await axios.post('http://localhost:3000/api/auth/signup', { fullName, username, email, password });
+            await axios.post('http://localhost:3000/api/auth/signup', { fullName, username, email, password, confirmPassword });
             setRegistered(true); // Notify parent that registration is complete
             alert('Registration successful! Please log in.');
             navigate('/');
@@ -76,6 +89,14 @@ function Register({ setRegistered }) {
                 placeholder="Confirm Password..."
                 onChange={(event) => {
                     setConfirmPassword(event.target.value);
+                }}
+            />
+
+            <input
+                type="text"
+                placeholder="Gender..."
+                onChange={(event) => {
+                    setGender(event.target.value);
                 }}
             />
             <button onClick={handleRegister}>Register</button>
