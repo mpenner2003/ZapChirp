@@ -29,6 +29,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [token, setToken] = useState("");
   const [showRegister, setShowRegister] = useState(false);
+  const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
     if (token) {
@@ -43,6 +44,7 @@ function App() {
       setRoom(room);
       setShowChat(true); // Show the chat component
     }
+    
   };
 
   return (
@@ -59,19 +61,26 @@ function App() {
                   <Login setLoggedIn={setLoggedIn} setToken={setToken} setShowRegister={setShowRegister} />
               )
             ) : !showChat ? (
-                <div className="joinChatContainer">
-                    <h3>ZapChirp</h3>
-                    <Contacts onContactClick={joinRoom} />
-                    <input
-                        type="text"
-                        placeholder="Room ID..."
-                        onChange={(event) => {
-                          setRoom(event.target.value);
-                        }}
-                    />
-                    <button onClick={() => joinRoom(room)}>Join A Room</button>
-                </div>
-            ) : (
+              <div className="joinChatContainer">
+                <h3>ZapChirp</h3>
+                <input 
+                  type="text" 
+                  placeholder="Username..." 
+                  onChange={(event) => {
+                    setUsername(event.target.value)
+                  }}
+                />
+                <input 
+                  type="text" 
+                  placeholder="Room ID..."
+                  onChange={(event) => {
+                    setRoom(event.target.value);
+                  }}
+                />
+                <button onClick={joinRoom}>Join A Room</button>
+                <Contacts contacts={contacts} addContact={setContacts}/> {/* Display Contacts component */}
+              </div>
+                ) : (
                 <Chat socket={socket} username={username} room={room} />
             )} />
         </Routes>

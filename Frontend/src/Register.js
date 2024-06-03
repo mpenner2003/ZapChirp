@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Register({ setRegistered }) {
+    const [fullName, setFullName] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); // State for password
     const [confirmPassword, setConfirmPassword] = useState(""); // State for confirm password
@@ -28,7 +30,7 @@ function Register({ setRegistered }) {
         }
 
         try {
-            await axios.post('http://localhost:3000/api/auth/signup', { email, password });
+            await axios.post('http://localhost:3000/api/auth/signup', { fullName, username, email, password });
             setRegistered(true); // Notify parent that registration is complete
             alert('Registration successful! Please log in.');
             navigate('/');
@@ -41,6 +43,20 @@ function Register({ setRegistered }) {
     return (
         <div className="registerContainer">
             <h1>Register to ZapChirp</h1>
+            <input
+                type="text"
+                placeholder="Full Name..."
+                onChange={(event) => {
+                    setFullName(event.target.value);
+                }}
+            />
+            <input
+                type="text"
+                placeholder="Username..."
+                onChange={(event) => {
+                    setUsername(event.target.value);
+                }}
+            />
             <input
                 type="text"
                 placeholder="Email..."
