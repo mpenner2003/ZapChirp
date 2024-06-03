@@ -13,7 +13,7 @@ const messageSchema = new mongoose.Schema({
     },
     message:{
         type: String,
-        required: True
+        required: true
     },
     //Created at, updated at => message.createAt: 12:20
 
