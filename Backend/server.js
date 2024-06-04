@@ -7,7 +7,7 @@ import { Server } from "socket.io";
 import authRoutes from "./routes/auth.routes.js";
 import connectToMongoDB from "./db/connectToMongoDB.js";
 
-dotenv.config(); // Load environment variables at the very top
+dotenv.config(); 
 
 console.log("Environment Variables:");
 console.log("PORT:", process.env.PORT);

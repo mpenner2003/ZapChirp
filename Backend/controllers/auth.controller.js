@@ -5,7 +5,7 @@ import generateTokenAndSetCookie from '../utils/generateToken.js';
 
 export const signup = async (req, res) => {
     try {
-      const {fullName, username, password, confirmPassword, gender} = req.body;  
+      const {fullName, username, email, password, confirmPassword, gender} = req.body;  
       
       if (password !== confirmPassword){
         return res.status(400).json({error: "Passwords do not match."})
@@ -15,6 +15,11 @@ export const signup = async (req, res) => {
 
       if (user){
         return res.status(400).json({error:"Username already exists."})
+      }
+
+      const emailExists = await User.findOne({ email });
+      if (emailExists) {
+          return res.status(400).json({ error: "Email already exists." });
       }
 
       // HASH PASSWORD HERE.
@@ -28,6 +33,7 @@ export const signup = async (req, res) => {
       const newUser = new User({
         fullName,
         username,
+        email,
         password:hashedPassword,
         gender,
         profilePic: gender == "male" ? maleProfilePic : femaleProfilePic
@@ -42,6 +48,7 @@ export const signup = async (req, res) => {
           _id: newUser._id,
           fullName: newUser.fullName,
           username: newUser.username,
+          email: newUser.email,
           profilePic: newUser.profilePic
         });
       } else {
