@@ -15,6 +15,7 @@ import Chat from './Chat'; // Importing Chat component
 import Contacts from './Contacts'; // Importing Contacts component
 import Login from './Login'; // Importing User Authentication component
 import Register from './Register'; // Importing User Registration component
+import CreateGroupChat from './CreateGroupChat'; // Importing CreateGroupChat component
 import axios from 'axios'; // Makes http requests from browser using GET, PUT, POST and DELETE
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'; // React Router to route our code
 
@@ -30,12 +31,25 @@ function App() {
   const [token, setToken] = useState("");
   const [showRegister, setShowRegister] = useState(false);
   const [contacts, setContacts] = useState([]);
+  const [groupChats, setGroupChats] = useState([]);
+  const [selectedContact, setSelectedContact] = useState(null);
+
+  
 
   useEffect(() => {
     if (token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
   }, [token]);
+
+  const handleSelectContact = (contact) => {
+    setSelectedContact(contact);
+    setShowChat(true); // Show chat when a contact is selected
+  };
+
+  const handleGroupCreated = (newGroup) => {
+    setGroupChats([...groupChats, newGroup]);
+  };
 
   // Function to join a chat room
   const joinRoom = () => {
@@ -63,6 +77,16 @@ function App() {
             ) : !showChat ? (
               <div className="joinChatContainer">
                 <h3>ZapChirp</h3>
+                <CreateGroupChat onGroupCreated={handleGroupCreated} />
+                <div className="groupChats">
+                  <h2>Group Chats</h2>
+                  {groupChats.map(group => (
+                    <div key={group._id}>
+                      <h3>{group.groupName}</h3>
+                      <p>Members: {group.members.join(', ')}</p>
+                    </div>
+                  ))}
+                </div>
                 <input 
                   type="text" 
                   placeholder="Username..." 
@@ -78,10 +102,10 @@ function App() {
                   }}
                 />
                 <button onClick={joinRoom}>Join A Room</button>
-                <Contacts contacts={contacts} addContact={setContacts}/> {/* Display Contacts component */}
+                <Contacts onSelectContact={handleSelectContact} contacts={contacts} addContact={setContacts}/> {/* Display Contacts component */}
               </div>
                 ) : (
-                <Chat socket={socket} username={username} room={room} />
+                <Chat socket={socket} username={username} room={room} contact={selectedContact}/>
             )} />
         </Routes>
       </div>

@@ -38,7 +38,7 @@ function Contacts() {
             <button onClick={addContact}>Add</button> {/* Call addContact function on button click */}
             <ul>
                 {contacts.map((contact, index) => (
-                    <li key={index}>{contact.name}</li> 
+                    <li key={index}  onClick={() => onSelectContact(contact)}>{contact.name}</li> 
                 ))} {/* Render the list of contacts */}
             </ul>
         </div>

@@ -10,32 +10,37 @@ Source Code. Available at: https://github.com/machadop1407/react-socketio-chat-a
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-function Chat({ socket, username, room }) {
+const socket = io.connect("http://localhost:3001");
+
+function Chat({ contact }) {
     // State variables to manage the current message and the list of messages
-    const [currentMessage, setCurrentMessage] = useState("");
-    const [messageList, setMessageList] = useState([]);
+    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState([]);
 
     // Function to send a message
-    const sendMessage = async () => {
-        if (currentMessage !== "") {
-            const messageData = {
-                room: room,
-                author: username,
-                message: currentMessage,
-                time:
-                    new Date(Date.now()).getHours() +
-                    ":" +
-                    new Date(Date.now()).getMinutes(),
+    const sendMessage = () => {
+        if (message.trim()) {
+            const newMessage = {
+                content: message,
+                contact: contact.name,
+                timestamp: new Date().toISOString()
             };
-
-            await socket.emit("send_message", messageData); // Emit the send_message event to the server
-            setMessageList((list) => [...list, messageData]); // Update the message list with the new message
-            setCurrentMessage(""); // Clear the current message input field
+            axios.post('http://localhost:3001/messages', newMessage)
+                .then(response => {
+                    setMessages([...messages, response.data]);
+                    setMessage("");
+                    socket.emit("send_message", response.data); // Emit the message to the WebSocket server
+                });
         }
     };
 
     // useEffect hook to listen for incoming messages
     useEffect(() => {
+        // Fetch existing messages with the contact
+        axios.get(`http://localhost:3001/messages?contact=${contact.name}`)
+            .then(response => {
+                setMessages(response.data);
+            });
         socket.on("receive_message", (data) => {
             setMessageList((list) => [...list, data]); // Update the message list with the received message
         });
@@ -45,40 +50,26 @@ function Chat({ socket, username, room }) {
     }, [socket]);
 
     return (
-        <div className="chat-window">
-            <div className="chat-header">
-                <p>Zap Room</p>
-            </div>
-            <div className="chat-body">
-                <ScrollToBottom className="message-container">
-                    {messageList.map((messageContent, index) => {
-                        return (
-                            <div key={index} className="message" id={username === messageContent.author ? "you" : "other"}>
-                                <div>
-                                    <div className="message-content">
-                                        <p>{messageContent.message}</p>
-                                    </div>
-                                    <div className="message-meta">
-                                        <p id="time">{messageContent.time}</p>
-                                        <p id="author">{messageContent.author}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
+        <div className="chat-container">
+            <h3>Zap with {contact.name}</h3>
+            <div className="messages-container">
+                <ScrollToBottom className="messages">
+                    {messages.map((msg, index) => (
+                        <div key={index} className="message">
+                            <span>{msg.content}</span>
+                            <span className="timestamp">{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                        </div>
+                    ))}
                 </ScrollToBottom>
             </div>
-            <div className="chat-footer">
-                <input 
-                    type="text" 
-                    value={currentMessage}
-                    placeholder="Type Something..." 
-                    onChange={(event) => {
-                        setCurrentMessage(event.target.value); // Update the current message state
-                    }}
-                    onKeyPress={(event) => {event.key === "Enter" && sendMessage();}} // Send message on Enter key press
+            <div className="message-input">
+                <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Type a message..."
                 />
-                <button onClick={sendMessage}>&#9658;</button> {/* Send message on button click */}
+                <button onClick={sendMessage}>Send</button>
             </div>
         </div>
     );
