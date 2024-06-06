@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Contacts() {
+function Contacts({ onSelectContact }) {
     // State variables to manage the list of contacts and new contact input
     const [contacts, setContacts] = useState([]);
     const [newContact, setNewContact] = useState("");

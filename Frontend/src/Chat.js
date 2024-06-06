@@ -9,7 +9,8 @@ Source Code. Available at: https://github.com/machadop1407/react-socketio-chat-a
 
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
-
+import axios from 'axios'; // Makes http requests from browser using GET, PUT, POST and DELETE
+import io from 'socket.io-client'; // Importing socket.io-client for WebSocket connections
 const socket = io.connect("http://localhost:3001");
 
 function Chat({ contact }) {
@@ -42,7 +43,7 @@ function Chat({ contact }) {
                 setMessages(response.data);
             });
         socket.on("receive_message", (data) => {
-            setMessageList((list) => [...list, data]); // Update the message list with the received message
+            setMessages((list) => [...list, data]); // Update the message list with the received message
         });
         return () => {
             socket.off("receive_message"); // Clean up the event listener on component unmount

@@ -6,7 +6,8 @@ import { Server } from "socket.io";
 
 import authRoutes from "./routes/auth.routes.js";
 import connectToMongoDB from "./db/connectToMongoDB.js";
-
+import groupChatRoutes from './routes/groupChat.routes.js';
+import protectRoute from './middleware/protectRoute.js';
 dotenv.config(); 
 
 console.log("Environment Variables:");
@@ -19,6 +20,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json()); // To parse the incoming requests with JSON payloads
+
+app.use("/api/groupChats", groupChatRoutes);
 
 // Connect to MongoDB
 connectToMongoDB();
