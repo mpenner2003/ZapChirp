@@ -9,6 +9,7 @@ import connectToMongoDB from "./db/connectToMongoDB.js";
 import groupChatRoutes from './routes/groupChat.routes.js';
 import messageRoutes from './routes/message.routes.js';
 import userRoutes from './routes/user.routes.js';
+import cookieParser from "cookie-parser";
 import protectRoute from './middleware/protectRoute.js';
 dotenv.config(); 
 
@@ -22,16 +23,18 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json()); // To parse the incoming requests with JSON payloads
+app.use(cookieParser());
 
 app.use("/api/groupChats", groupChatRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
+// Routes setup
+app.use("/api/auth", authRoutes);
 
 // Connect to MongoDB
 connectToMongoDB();
 
-// Routes setup
-app.use("/api/auth", authRoutes);
+
 
 // Create HTTP server
 const server = http.createServer(app);

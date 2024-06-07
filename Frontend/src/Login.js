@@ -10,12 +10,14 @@ function Login({ setLoggedIn, setToken}) { // Passes two booleans
 
     const handleLogin = async () => { // Function to handle user login
         try {
-            const response = await axios.post('http://localhost:3001/login', { username, password });
+            const response = await axios.post('http://localhost:3000/api/auth/login', { username, password });
             setToken(response.data.token);
             setLoggedIn(true);
             navigate('/Chat');
         } catch (error) { // Something went wrong
-            alert('Login failed');
+            const errorMessage = error.response ? error.response.data.error : error.message;
+            console.error('Login failed:', errorMessage);
+            alert('Login failed: ' + errorMessage);
         }
     };
 

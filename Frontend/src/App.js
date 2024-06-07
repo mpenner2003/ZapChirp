@@ -66,8 +66,8 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Login setLoggedIn={setLoggedIn} setToken={setToken} />} />
-          <Route path="/register" element={<Register setRegistered={() => setLoggedIn(true)} />} />
-          <Route path="/chat" element={
+          <Route path="/Register" element={<Register setRegistered={() => setLoggedIn(true)} />} />
+          <Route path="/Chat" element={
             !loggedIn ? (
               showRegister ? (
                 <Register setRegistered={() => setShowRegister(false)} />

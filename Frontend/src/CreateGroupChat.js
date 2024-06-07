@@ -5,6 +5,8 @@ function CreateGroupChat({ onGroupCreated }) {
   const [groupName, setGroupName] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [newUserName, setNewUserName] = useState("");
+  const [newUserEmail, setNewUserEmail] = useState("");
 
   useEffect(() => {
     // Fetch all users to select as members
@@ -46,6 +48,24 @@ function CreateGroupChat({ onGroupCreated }) {
     });
   };
 
+  const handleAddNewUser = () => {
+    if (newUserName === "" || newUserEmail === "") {
+      alert("Please provide both name and email.");
+      return;
+    }
+
+    const newUser = {
+      _id: new Date().getTime().toString(), // Temporary ID until saved to the server
+      username: newUserName,
+      email: newUserEmail
+    };
+
+    setAllUsers([...allUsers, newUser]);
+    setSelectedUsers([...selectedUsers, newUser._id]);
+    setNewUserName("");
+    setNewUserEmail("");
+  };
+
   return (
     <div className="createGroupChatContainer">
       <h2>Create Group Chat</h2>
@@ -56,7 +76,6 @@ function CreateGroupChat({ onGroupCreated }) {
         onChange={(e) => setGroupName(e.target.value)}
       />
       <div className="userSelection">
-        <h3>Select Members</h3>
         {allUsers.map(user => (
           <div key={user._id}>
             <input
@@ -68,6 +87,20 @@ function CreateGroupChat({ onGroupCreated }) {
             <label htmlFor={`user-${user._id}`}>{user.username}</label>
           </div>
         ))}
+        <h2>Add New Member</h2>
+        <input
+          type="text"
+          placeholder="Name..."
+          value={newUserName}
+          onChange={(e) => setNewUserName(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Email..."
+          value={newUserEmail}
+          onChange={(e) => setNewUserEmail(e.target.value)}
+        />
+        <button onClick={handleAddNewUser}>Add Member</button>
       </div>
       <button onClick={handleCreateGroup}>Create Group Chat</button>
     </div>
