@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Contacts({ onSelectContact }) {
+function Contacts({ onSelectContact, onCreateGroupChat }) {
     // State variables to manage the list of contacts and new contact input
     const [contacts, setContacts] = useState([]);
-    const [newContact, setNewContact] = useState("");
+    const [newContactName, setNewContactName] = useState("");
+    const [newContactEmail, setNewContactEmail] = useState("");
 
     // useEffect hook to fetch contacts from the server when the component mounts
     useEffect(() => {
@@ -17,28 +18,37 @@ function Contacts({ onSelectContact }) {
 
     // Function to add a new contact
     const addContact = () => {
-        if (newContact !== "") {
-            axios.post('http://localhost:3001/contacts', { name: newContact })
+        if (newContactName !== "" && newContactEmail !== "") {
+            axios.post('http://localhost:3001/contacts', { name: newContactName, email: newContactEmail })
                 .then(response => {
                     setContacts([...contacts, response.data]); // Update the contacts state with the new contact
-                    setNewContact(""); // Clear the new contact input field
+                    setNewContactName(""); // Clear the new contact name input field
+                    setNewContactEmail(""); // Clear the new contact email input field
                 });
         }
     };
 
     return (
         <div>
-            <h3>Contacts</h3>
             <input
                 type="text"
-                value={newContact}
-                onChange={(e) => setNewContact(e.target.value)} // Update the new contact state on input change
-                placeholder="Add new contact"
+                value={newContactName}
+                onChange={(e) => setNewContactName(e.target.value)} // Update the new contact name state on input change
+                placeholder="Add new contact name"
+            />
+            <input
+                type="email"
+                value={newContactEmail}
+                onChange={(e) => setNewContactEmail(e.target.value)} // Update the new contact email state on input change
+                placeholder="Add new contact email"
             />
             <button onClick={addContact}>Add</button> {/* Call addContact function on button click */}
             <ul>
                 {contacts.map((contact, index) => (
-                    <li key={index}  onClick={() => onSelectContact(contact)}>{contact.name}</li> 
+                    <li key={index}>
+                        <button onClick={() => onSelectContact(contact)}>{contact.name}</button>
+                        <button onClick={() => onCreateGroupChat(contact)}>Start Group Chat</button>
+                    </li> 
                 ))} {/* Render the list of contacts */}
             </ul>
         </div>

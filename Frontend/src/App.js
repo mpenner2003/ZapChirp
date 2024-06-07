@@ -19,6 +19,7 @@ import CreateGroupChat from './CreateGroupChat'; // Importing CreateGroupChat co
 import axios from 'axios'; // Makes http requests from browser using GET, PUT, POST and DELETE
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'; // React Router to route our code
 
+
 // Creating a socket connection to the server
 const socket = io.connect("http://localhost:3001");
 
@@ -33,7 +34,8 @@ function App() {
   const [contacts, setContacts] = useState([]);
   const [groupChats, setGroupChats] = useState([]);
   const [selectedContact, setSelectedContact] = useState(null);
-
+  const [selectedGroupChat, setSelectedGroupChat] = useState(null);
+  
   
 
   useEffect(() => {
@@ -47,8 +49,14 @@ function App() {
     setShowChat(true); // Show chat when a contact is selected
   };
 
-  const handleGroupCreated = (newGroup) => {
-    setGroupChats([...groupChats, newGroup]);
+  const handleCreateGroupChat = (contact) => {
+    const newGroupChat = {
+      id: `${username}-${contact.name}`,
+      members: [username, contact.name]
+    };
+    setGroupChats([...groupChats, newGroupChat]);
+    setSelectedGroupChat(newGroupChat);
+    setShowChat(true);
   };
 
   // Function to join a chat room
@@ -72,40 +80,26 @@ function App() {
               showRegister ? (
                 <Register setRegistered={() => setShowRegister(false)} />
               ) : (
-                  <Login setLoggedIn={setLoggedIn} setToken={setToken} setShowRegister={setShowRegister} />
+                <Login setLoggedIn={setLoggedIn} setToken={setToken} setShowRegister={setShowRegister} />
               )
             ) : !showChat ? (
               <div className="joinChatContainer">
-                <h3>ZapChirp</h3>
-                <CreateGroupChat onGroupCreated={handleGroupCreated} />
-                <div className="groupChats">
-                  <h2>Group Chats</h2>
-                  {groupChats.map(group => (
-                    <div key={group._id}>
-                      <h3>{group.groupName}</h3>
-                      <p>Members: {group.members.join(', ')}</p>
-                    </div>
-                  ))}
-                </div>
-                <input 
-                  type="text" 
-                  placeholder="Username..." 
-                  onChange={(event) => {
-                    setUsername(event.target.value)
+                <h3>Zap Someone with a Chirp</h3>
+                <Contacts
+                  onSelectContact={(contact) => {
+                    setUsername(contact.name);
+                    setRoom(`${username}-${contact.name}`);
+                    joinRoom();
                   }}
-                />
-                <input 
-                  type="text" 
-                  placeholder="Room ID..."
-                  onChange={(event) => {
-                    setRoom(event.target.value);
-                  }}
-                />
-                <button onClick={joinRoom}>Join A Room</button>
-                <Contacts onSelectContact={handleSelectContact} contacts={contacts} addContact={setContacts}/> {/* Display Contacts component */}
+                  onCreateGroupChat={handleCreateGroupChat}
+                  contacts={contacts}
+                  addContact={setContacts}
+                /> {/* Display Contacts component */}
               </div>
-                ) : (
-                <Chat socket={socket} username={username} room={room} contact={selectedContact}/>
+            ) : selectedGroupChat ? (
+              <Chat socket={socket} username={username} room={selectedGroupChat.id} contact={selectedContact} />
+            ) : (
+              <Chat socket={socket} username={username} room={room} contact={selectedContact} />
             )} />
         </Routes>
       </div>
@@ -113,4 +107,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
