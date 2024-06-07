@@ -43,7 +43,7 @@ function Register({ setRegistered }) {
         }
 
         try {
-            await axios.post('http://localhost:3000/api/auth/signup', { fullName, username, email, password, confirmPassword });
+            await axios.post('http://localhost:3000/api/auth/signup', { fullName, username, email, password, gender });
             setRegistered(true); // Notify parent that registration is complete
             alert('Registration successful! Please log in.');
             navigate('/');

@@ -3,7 +3,6 @@ import axios from 'axios';
 
 function CreateGroupChat({ onGroupCreated }) {
   const [groupName, setGroupName] = useState("");
-  const [members, setMembers] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
 

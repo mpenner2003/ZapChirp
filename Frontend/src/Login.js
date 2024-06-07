@@ -4,13 +4,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Login({ setLoggedIn, setToken}) { // Passes two booleans
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleLogin = async () => { // Function to handle user login
         try {
-            const response = await axios.post('http://localhost:3001/login', { email, password });
+            const response = await axios.post('http://localhost:3001/login', { username, password });
             setToken(response.data.token);
             setLoggedIn(true);
             navigate('/Chat');
@@ -25,9 +25,9 @@ function Login({ setLoggedIn, setToken}) { // Passes two booleans
             <h2>Login with your Zap Credentials</h2>
             <input
                 type="text"
-                placeholder="Email..."
+                placeholder="Username..."
                 onChange={(event) => {
-                    setEmail(event.target.value);
+                    setUsername(event.target.value);
                 }}
             />
             <input

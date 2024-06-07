@@ -5,22 +5,17 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true
-    },
     username:{
         type:String,
         required:true,
         unique:true
     },
-    password:{
+    email:{
         type:String,
         required:true,
-        minlength:6
+        minlength:12
     },
-    confirmPassword:{
+    password:{
         type:String,
         required:true,
         minlength:6
@@ -28,13 +23,16 @@ const userSchema = new mongoose.Schema({
     gender:{
         type:String,
         required:true,
-        enum:["male", "female", "nonbinary"]
+        enum:["male", "female"]
     },
     profilePic:{
         type:String,
         default:"",
     },
-});
+    // createdAt, updatedAt => Member since <createdAt>
+}, 
+{timestamps: true}
+);
 
 
 const User = mongoose.model("User", userSchema);

@@ -7,6 +7,8 @@ import { Server } from "socket.io";
 import authRoutes from "./routes/auth.routes.js";
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import groupChatRoutes from './routes/groupChat.routes.js';
+import messageRoutes from './routes/message.routes.js';
+import userRoutes from './routes/user.routes.js';
 import protectRoute from './middleware/protectRoute.js';
 dotenv.config(); 
 
@@ -22,6 +24,8 @@ app.use(cors());
 app.use(express.json()); // To parse the incoming requests with JSON payloads
 
 app.use("/api/groupChats", groupChatRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/users", userRoutes);
 
 // Connect to MongoDB
 connectToMongoDB();
@@ -61,4 +65,6 @@ io.on("connection", (socket) => {
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+
 
