@@ -2,6 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import io from 'socket.io-client';
+
+// Assuming your backend server is running on localhost:3000
+const socket = io.connect('http://localhost:3000');
+
 function Contacts({ onSelectContact, onCreateGroupChat }) {
     // State variables to manage the list of contacts and new contact input
     const [contacts, setContacts] = useState([]);
@@ -10,21 +15,40 @@ function Contacts({ onSelectContact, onCreateGroupChat }) {
 
     // useEffect hook to fetch contacts from the server when the component mounts
     useEffect(() => {
-        axios.get('http://localhost:3000/contacts')
-            .then(response => {
-                setContacts(response.data); // Update the contacts state with the fetched data
-            });
+        fetchContacts();
     }, []);
 
-    // Function to add a new contact
-    const addContact = () => {
+    useEffect(() => {
+        // Listen for the 'new_contact' event
+        socket.on('new_contact', (contact) => {
+            setContacts((prevContacts) => [...prevContacts, contact]);
+        });
+
+        // Cleanup the event listener on component unmount
+        return () => socket.off('new_contact');
+    }, []);
+
+    const fetchContacts = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/contacts');
+            setContacts(response.data);
+        } catch (error) {
+            console.error('Error fetching contacts:', error.message);
+        }
+    };
+
+    const addContact = async () => {
         if (newContactName !== "" && newContactEmail !== "") {
-            axios.post('http://localhost:3000/contacts', { name: newContactName, email: newContactEmail })
-                .then(response => {
-                    setContacts([...contacts, response.data]); // Update the contacts state with the new contact
-                    setNewContactName(""); // Clear the new contact name input field
-                    setNewContactEmail(""); // Clear the new contact email input field
-                });
+            try {
+                const response = await axios.post('http://localhost:3000/contacts', { name: newContactName, email: newContactEmail });
+                setContacts([...contacts, response.data]);
+                setNewContactName("");
+                setNewContactEmail("");
+                // Notify the server about the new contact
+                socket.emit('new_contact', response.data);
+            } catch (error) {
+                console.error('Error adding contact:', error.message);
+            }
         }
     };
 

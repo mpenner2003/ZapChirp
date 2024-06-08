@@ -30,12 +30,10 @@ app.use(express.json()); // Parsing JSON request bodies
 app.use(cookieParser()); // Parsing cookies
 
 // Route setup
-app.use("/api/auth", authRoutes); // Route for authentication
-app.use("/api/users", userRoutes); // Route for user-related operationss
 app.use("/api/groupChats", groupChatRoutes); // Route for group chats
 app.use("/api/messages", messageRoutes); // Route for messages
-
-
+app.use("/api/users", userRoutes); // Route for user-related operations
+app.use("/api/auth", authRoutes); // Route for authentication
 
 // Connect to MongoDB
 connectToMongoDB();
@@ -46,7 +44,7 @@ const server = http.createServer(app);
 // Initialize Socket.io server with CORS configuration
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3001", // Allowing requests from this origin
+        origin: "http://localhost:3000", // Allowing requests from this origin
         methods: ["GET", "POST"] // Allowing these HTTP methods
     },
 });
