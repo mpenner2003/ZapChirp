@@ -9,6 +9,7 @@ import connectToMongoDB from "./db/connectToMongoDB.js";
 import groupChatRoutes from './routes/groupChat.routes.js';
 import messageRoutes from './routes/message.routes.js';
 import userRoutes from './routes/user.routes.js';
+import contactRoutes from './routes/contact.routes.js';
 import cookieParser from "cookie-parser";
 
 // Loading environment variables from .env file
@@ -34,6 +35,7 @@ app.use("/api/groupChats", groupChatRoutes); // Route for group chats
 app.use("/api/messages", messageRoutes); // Route for messages
 app.use("/api/users", userRoutes); // Route for user-related operations
 app.use("/api/auth", authRoutes); // Route for authentication
+app.use('/api/contacts', contactRoutes); // Route for contacts
 
 // Connect to MongoDB
 connectToMongoDB();
@@ -44,7 +46,7 @@ const server = http.createServer(app);
 // Initialize Socket.io server with CORS configuration
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000", // Allowing requests from this origin
+        origin: "http://localhost:3001", // Allowing requests from this origin
         methods: ["GET", "POST"] // Allowing these HTTP methods
     },
 });

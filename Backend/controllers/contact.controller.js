@@ -7,6 +7,7 @@ export const addContact = async (req, res) => {
 
     try {
         const newContact = await User.findOneAndUpdate(
+            { name },
             { email },
             { $addToSet: { contacts: userId } },
             { new: true }
@@ -21,6 +22,10 @@ export const addContact = async (req, res) => {
             { $addToSet: { contacts: newContact._id } },
             { new: true }
         );
+
+        // Get the socket.io instance
+        const io = req.app.get('socketio');
+        io.emit('new_contact', newContact);
 
         res.status(201).json(newContact);
     } catch (error) {

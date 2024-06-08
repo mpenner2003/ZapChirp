@@ -50,6 +50,9 @@ function Contacts({ onSelectContact, onCreateGroupChat }) {
                 console.error('Error adding contact:', error.message);
             }
         }
+        else {
+            alert("Please fill in both name and email");
+        }
     };
 
     return (
