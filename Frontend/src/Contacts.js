@@ -10,7 +10,7 @@ function Contacts({ onSelectContact, onCreateGroupChat }) {
 
     // useEffect hook to fetch contacts from the server when the component mounts
     useEffect(() => {
-        axios.get('http://localhost:3001/contacts')
+        axios.get('http://localhost:3000/contacts')
             .then(response => {
                 setContacts(response.data); // Update the contacts state with the fetched data
             });
@@ -19,7 +19,7 @@ function Contacts({ onSelectContact, onCreateGroupChat }) {
     // Function to add a new contact
     const addContact = () => {
         if (newContactName !== "" && newContactEmail !== "") {
-            axios.post('http://localhost:3001/contacts', { name: newContactName, email: newContactEmail })
+            axios.post('http://localhost:3000/contacts', { name: newContactName, email: newContactEmail })
                 .then(response => {
                     setContacts([...contacts, response.data]); // Update the contacts state with the new contact
                     setNewContactName(""); // Clear the new contact name input field
@@ -30,6 +30,7 @@ function Contacts({ onSelectContact, onCreateGroupChat }) {
 
     return (
         <div>
+            
             <input
                 type="text"
                 value={newContactName}

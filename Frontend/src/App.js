@@ -17,11 +17,11 @@ import Login from './Login'; // Importing User Authentication component
 import Register from './Register'; // Importing User Registration component
 import CreateGroupChat from './CreateGroupChat'; // Importing CreateGroupChat component
 import axios from 'axios'; // Makes http requests from browser using GET, PUT, POST and DELETE
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'; // React Router to route our code
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // React Router to route our code
 
 
 // Creating a socket connection to the server
-const socket = io.connect("http://localhost:3001");
+const socket = io.connect("http://localhost:3000");
 
 function App() {
   // State variables to manage username, room, and chat visibility
@@ -35,7 +35,7 @@ function App() {
   const [groupChats, setGroupChats] = useState([]);
   const [selectedContact, setSelectedContact] = useState(null);
   const [selectedGroupChat, setSelectedGroupChat] = useState(null);
-  
+  const [showCreateGroupChat, setShowCreateGroupChat] = useState(false);
   
 
   useEffect(() => {
@@ -43,11 +43,6 @@ function App() {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
   }, [token]);
-
-  const handleSelectContact = (contact) => {
-    setSelectedContact(contact);
-    setShowChat(true); // Show chat when a contact is selected
-  };
 
   const handleCreateGroupChat = (contact) => {
     const newGroupChat = {
@@ -57,6 +52,7 @@ function App() {
     setGroupChats([...groupChats, newGroupChat]);
     setSelectedGroupChat(newGroupChat);
     setShowChat(true);
+    setShowCreateGroupChat(false);
   };
 
   // Function to join a chat room
@@ -74,8 +70,8 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Login setLoggedIn={setLoggedIn} setToken={setToken} />} />
-          <Route path="/Register" element={<Register setRegistered={() => setLoggedIn(true)} />} />
-          <Route path="/Chat" element={
+          <Route path="/register" element={<Register setRegistered={() => setLoggedIn(true)} />} />
+          <Route path="/chat" element={
             !loggedIn ? (
               showRegister ? (
                 <Register setRegistered={() => setShowRegister(false)} />
@@ -84,17 +80,19 @@ function App() {
               )
             ) : !showChat ? (
               <div className="joinChatContainer">
-                <h3>Zap Someone with a Chirp</h3>
                 <Contacts
                   onSelectContact={(contact) => {
                     setUsername(contact.name);
                     setRoom(`${username}-${contact.name}`);
+                    setSelectedContact(contact);
                     joinRoom();
                   }}
                   onCreateGroupChat={handleCreateGroupChat}
                   contacts={contacts}
                   addContact={setContacts}
-                /> {/* Display Contacts component */}
+                /> {showCreateGroupChat && (
+                  <CreateGroupChat onGroupCreated={handleCreateGroupChat} />
+                )}
               </div>
             ) : selectedGroupChat ? (
               <Chat socket={socket} username={username} room={selectedGroupChat.id} contact={selectedContact} />
