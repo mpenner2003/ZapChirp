@@ -6,23 +6,22 @@ Features
     User registration and login
         Registration: Users can register by providing their full name, username, email, password, and gender. The password is hashed and stored securely in the database.
         Login: Registered users can log in using their username and password. A JWT token is generated upon successful login and is used for authenticating subsequent requests.
-        Logout: Users can log out, which invalidates their session token.
-    
+        Logout: If users refresh the page, users can log out, which invalidates their session tokens
     FEATURES THAT ARE STILL A WORK IN PROGRESS:
     Real-time messaging with contacts
-        Messaging: Users can send and receive messages in real-time using Socket.io. Messages are stored in MongoDB.
+        Messaging: Users would be able to send and receive messages in real-time using Socket.io. Messages should be stored in MongoDB.
         WebSockets: WebSocket connections are used to ensure instant delivery of messages between users.
-        Typing Indicators: Optionally, typing indicators can be implemented to show when a contact is typing.
     Add and manage contacts
-        Adding Contacts: Users can add new contacts by entering the contact's name and email. Both users will see each other in their contact lists upon successful addition.
-        Managing Contacts: Users can view their list of contacts, start a chat with a contact, or create a group chat including multiple contacts.
+        Adding Contacts: Users would add new contacts by entering the contact's name and email. Both users would see each other in their contact lists upon successful addition.
     Create and join group chats
         Group Chat Creation: Users can create group chats by selecting multiple contacts. Each group chat has a unique name and a list of members.
         Joining Group Chats: Users can join group chats they are invited to or are a member of, and start messaging in real-time.
     Responsive design
-
 Main Code Issues:
-
+    Issues with connecting to MongoDB.  For whatever reason, registration information is saved, but cannot be found on MongoDB.  When we try logging in, login is successful, which to us is very strange.
+    Adding contacts feature does not work as intended.  We are unsure as to why this is happening.
+    The chat function otherwise would work, but adding contacts is a barrier to that.  The program in theory should allow messages to be sent.
+    At this current time, we are turning in an unfinished product.  The Backend is mostly complete, and tests have been done on it, but we have had trouble linking the frontend. 
 Installation
     Prerequisites
         Node.js and npm
