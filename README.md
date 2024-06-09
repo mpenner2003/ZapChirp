@@ -7,7 +7,7 @@ Features
         Registration: Users can register by providing their full name, username, email, password, and gender. The password is hashed and stored securely in the database.
         Login: Registered users can log in using their username and password. A JWT token is generated upon successful login and is used for authenticating subsequent requests.
         Logout: If users refresh the page, users can log out, which invalidates their session tokens
-    FEATURES THAT ARE STILL A WORK IN PROGRESS:
+FEATURES THAT ARE STILL A WORK IN PROGRESS (Unfinished):
     Real-time messaging with contacts
         Messaging: Users would be able to send and receive messages in real-time using Socket.io. Messages should be stored in MongoDB.
         WebSockets: WebSocket connections are used to ensure instant delivery of messages between users.
@@ -18,10 +18,10 @@ Features
         Joining Group Chats: Users can join group chats they are invited to or are a member of, and start messaging in real-time.
     Responsive design
 Main Code Issues:
-    Issues with connecting to MongoDB.  For whatever reason, registration information is saved, but cannot be found on MongoDB.  When we try logging in, login is successful, which to us is very strange.
+    Issues with connecting to MongoDB.  For whatever reason, registration information is saved, but cannot be found on MongoDB.  When we try logging in, login is successful, which to us is very strange.  We have not been receiving any formal error messages in this regard when examining the server side code.
     Adding contacts feature does not work as intended.  We are unsure as to why this is happening.
     The chat function otherwise would work, but adding contacts is a barrier to that.  The program in theory should allow messages to be sent.
-    At this current time, we are turning in an unfinished product.  The Backend is mostly complete, and tests have been done on it, but we have had trouble linking the frontend. 
+    At this current time, we are turning in an unfinished product.  The Backend is mostly complete, and tests have been done on it using Postman, but we have had trouble linking the frontend. Less testing was done on the frontend as we were encountering issues with linking
 Installation
     Prerequisites
         Node.js and npm
