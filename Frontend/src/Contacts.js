@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import io from 'socket.io-client';
 
-// Assuming your backend server is running on localhost:3000
 const socket = io.connect('http://localhost:3000');
 
 function Contacts({ onSelectContact, onCreateGroupChat }) {
