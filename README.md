@@ -34,40 +34,52 @@ Frontend and Backend Linking:
     Less thorough frontend testing due to these issues.
     
 Testing
+
 Frontend Testing
+
     Challenges: Encountered multiple issues while manually running the code through the terminal in VS Code, which hindered thorough testing with Jest.
 Backend Testing
+
     Performed using Postman, with satisfactory results for backend functionalities.
 
 Installation and Setup:
 
 Prerequisites:
+
 Node.js and npm
 MongoDB
 
 Backend Setup:
-Clone the repository and navigate to the backend directory:
 
+Clone the repository and navigate to the backend directory:
 
 git clone https://github.com/mpenner2003/ZapChirp.git
 cd ZapChirp/Backend
+
 Install backend dependencies:
+
 npm install
 
 Create a .env file in the backend directory and add the following environment variables:
+
 MONGO_DB_URL=mongodb://localhost:27017/zapchirp
 JWT_SECRET=your_jwt_secret
 NODE_ENV=development
 
 Start the backend server:
+
 npm start
 
 Frontend Setup
+
 Navigate to the frontend directory:
+
 cd ZapChirp/Frontend
 
 Install frontend dependencies:
+
 npm install
 
 Start the frontend development server:
+
 npm start
