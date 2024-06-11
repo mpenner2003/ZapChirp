@@ -32,6 +32,7 @@ Adding Contacts:
 Frontend and Backend Linking:
     Difficulty in linking the frontend to the backend.
     Less thorough frontend testing due to these issues.
+    
 Testing
 Frontend Testing
     Challenges: Encountered multiple issues while manually running the code through the terminal in VS Code, which hindered thorough testing with Jest.
