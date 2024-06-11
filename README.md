@@ -1,7 +1,9 @@
 ZapChirp
+
 ZapChirp is a real-time chat application built using React for the frontend and Node.js with Express and MongoDB for the backend. The application supports user registration, login, adding contacts, creating group chats, and real-time messaging using Socket.io.
 
 Current Status
+
 Completed Features
     User Registration and Login
     Registration: Users can register by providing their full name, username, email, password, and gender. Passwords are hashed and stored securely in the database.
