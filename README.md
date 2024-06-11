@@ -16,14 +16,16 @@ FEATURES THAT ARE STILL A WORK IN PROGRESS (Unfinished):
     Add and manage contacts
         Adding Contacts: Users would add new contacts by entering the contact's name and email. Both users would see each other in their contact lists upon successful addition.
     Create and join group chats
-        Group Chat Creation: Users can create group chats by selecting multiple contacts. Each group chat has a unique name and a list of members.
-        Joining Group Chats: Users can join group chats they are invited to or are a member of, and start messaging in real-time.
+        Group Chat Creation: Users would create group chats by selecting multiple contacts. Each group chat would have a unique name and a list of members.
+        Joining Group Chats: Users would join group chats they are invited to or are a member of, and start messaging in real-time.
     Responsive design
 Main Code Issues:
     Issues with connecting to MongoDB.  For whatever reason, registration information is saved, but cannot be found on MongoDB.  When we try logging in, login is successful, which to us is very strange.  We have not been receiving any formal error messages in this regard when examining the server side code.
     Adding contacts feature does not work as intended.  We are unsure as to why this is happening.
     The chat function otherwise would work, but adding contacts is a barrier to that.  The program in theory should allow messages to be sent.
     At this current time, we are turning in an unfinished product.  The Backend is mostly complete, and tests have been done on it using Postman, but we have had trouble linking the frontend. Less testing was done on the frontend as we were encountering issues with linking
+
+TESTING USED:
 
 Installation
     Prerequisites
