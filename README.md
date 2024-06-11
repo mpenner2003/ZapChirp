@@ -26,6 +26,9 @@ Main Code Issues:
     At this current time, we are turning in an unfinished product.  The Backend is mostly complete, and tests have been done on it using Postman, but we have had trouble linking the frontend. Less testing was done on the frontend as we were encountering issues with linking
 
 TESTING USED:
+    We were unable to thoroughly test the frontend using Jest due to how many issues we have encountered when manually running the code through the terminal in VS Code.
+BACKEND TESTING USED:
+
 
 Installation
     Prerequisites
