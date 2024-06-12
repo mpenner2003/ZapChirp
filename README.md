@@ -47,7 +47,11 @@ Frontend Testing
     Challenges: Encountered multiple issues while manually running the code through the terminal in VS Code, which hindered thorough testing with Jest.
 Backend Testing
 
-    Performed using Postman, with satisfactory results for backend functionalities.
+    We used postman api to send requests and get requests using the backend and Mongo dB database cluster. We rested the sign up functionality by creating 
+    a new user with their full name, username, email address, password, and gender. This would allow us to see if the backend would insert the new user into 
+    the database. This also allowed us to test the hash password functionality ti protect the users password and avoid storing the password in plain text
+    The login functionality was tested by sending a request to login using existing password and username. A 201 code was returned, indicating a successful 
+    login. The logout functionality was tested by getting a username, returning a 201 code ans a log out message
 
 Installation and Setup:
 
